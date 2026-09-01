@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Class for accessing module's configuration values -->
+    <preference for="Line\VerifiedPurchase\Api\Data\ConfigInterface"
+        type="Line\VerifiedPurchase\Model\Config" />
+
+    <!-- Email Notification class -->
+    <preference for="Line\VerifiedPurchase\Api\EmailNotificationInterface"
+        type="Line\VerifiedPurchase\Model\Notification\Email" />
+
+    <!-- Verification Process representation Model -->
+    <preference for="Line\VerifiedPurchase\Api\Data\VerifyPurchaseInterface"
+        type="Line\VerifiedPurchase\Model\VerifyPurchase" />
+
+    <preference for="Line\VerifiedPurchase\Api\Data\VerifiedPurchaseSearchResultsInterface"
+        type="Line\VerifiedPurchase\Model\VerifiedPurchaseSearchResults" />
+
+    <!-- Connector that interacts with Line Api Service -->
+    <preference for="Line\VerifiedPurchase\Api\Data\ConnectorInterface"
+        type="Line\VerifiedPurchase\Model\Client\Connector" />
+
+    <!-- Verify Purchase data schema -->
+    <preference for="Line\VerifiedPurchase\Api\VerifyPurchaseRepositoryInterface"
+        type="Line\VerifiedPurchase\Model\VerifyPurchaseRepository" />
+    <!-- Gateway response when trying to validate a code, during the verification process -->
+    <preference for="Line\VerifiedPurchase\Api\Verification\ResponseInterface"
+        type="Line\VerifiedPurchase\Gateway\Api\Response" />
+
+    <!-- Adds Line Verified Purchase fields into the Line Payment request -->
+    <type name="Line\Payment\Gateway\Request\IntegrationPool">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="verified_purchase_request_builder" xsi:type="object">
+                    Line\VerifiedPurchase\Gateway\Request\VerifiedBuilder
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Add Verified Purchase fields required fields into the Details request -->
+    <type name="Line\Payment\Gateway\Request\DetailsDataBuilder">
+        <plugin name="verified_purchase_request_details_add"
+            type="Line\VerifiedPurchase\Plugin\AddDetailsIntoRequest" />
+    </type>
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="verification_send_email_pending" xsi:type="object">
+                    Line\VerifiedPurchase\Command\Email\PendingCommand
+                </item>
+                <item name="verification_send_email_complete" xsi:type="object">
+                    Line\VerifiedPurchase\Command\Email\CompleteCommand
+                </item>
+                <item name="verification_send_email_failed" xsi:type="object">
+                    Line\VerifiedPurchase\Command\Email\FailedCommand
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Custom Debug Logger: implementation -->
+    <virtualType name="VerifiedLoggerHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">
+                /var/log/line-verified-purchase.log
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="VerifiedLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">VerifiedLoggerHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Custom Debug Logger: injections -->
+    <type name="Line\VerifiedPurchase\Model\Client\Connector">
+        <arguments>
+            <argument name="logger" xsi:type="object">VerifiedLogger</argument>
+        </arguments>
+    </type>
+    <type name="Line\VerifiedPurchase\Gateway\Request\Handler">
+        <arguments>
+            <argument name="logger" xsi:type="object">VerifiedLogger</argument>
+        </arguments>
+    </type>
+    <type name="Line\VerifiedPurchase\Gateway\Request\VerifiedBuilder">
+        <arguments>
+            <argument name="logger" xsi:type="object">VerifiedLogger</argument>
+        </arguments>
+    </type>
+    <type name="Line\VerifiedPurchase\Model\Verification\ValidateAction">
+        <arguments>
+            <argument name="logger" xsi:type="object">VerifiedLogger</argument>
+        </arguments>
+    </type>
+    <type name="Line\VerifiedPurchase\Model\Service">
+        <arguments>
+            <argument name="logger" xsi:type="object">VerifiedLogger</argument>
+        </arguments>
+    </type>
+    <type name="Line\VerifiedPurchase\Observer">
+        <arguments>
+            <argument name="logger" xsi:type="object">VerifiedLogger</argument>
+        </arguments>
+    </type>
+    <type name="Line\VerifiedPurchase\Model\Notification\Email">
+        <arguments>
+            <argument name="logger" xsi:type="object">VerifiedLogger</argument>
+        </arguments>
+    </type>
+    <type name="Line\VerifiedPurchase\Observer\UpdateVerificationAfterOrderPlace">
+        <arguments>
+            <argument name="logger" xsi:type="object">VerifiedLogger</argument>
+        </arguments>
+    </type>
+    <type name="Line\VerifiedPurchase\Observer\BeforeDataConverter">
+        <arguments>
+            <argument name="logger" xsi:type="object">VerifiedLogger</argument>
+        </arguments>
+    </type>
+    <type name="Line\VerifiedPurchase\Model\VerificationManager">
+        <arguments>
+            <argument name="logger" xsi:type="object">VerifiedLogger</argument>
+        </arguments>
+    </type>
+</config>

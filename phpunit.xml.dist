@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2026 Line. All rights reserved.
+ */
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+         colors="true"
+         bootstrap="vendor/autoload.php"
+         cacheResultFile=".phpunit.result.cache">
+    <!--
+        The suite needs the Magento framework and Line_Payment on the autoloader, so run it from
+        inside a Magento installation, pointing phpunit at that installation's vendor/autoload.php
+        and at app/code/Line/VerifiedPurchase/Test/Unit.
+    -->
+    <testsuites>
+        <testsuite name="Line Verified Purchase Unit Tests">
+            <directory>Test/Unit</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

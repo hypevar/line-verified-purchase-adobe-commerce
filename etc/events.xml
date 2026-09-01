@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+
+    <!-- Review authorization specific fields to update process -->
+    <event name="line_payment_data_converter_before">
+        <observer name="verified_purchases_response_checker"
+            instance="Line\VerifiedPurchase\Observer\BeforeDataConverter" />
+    </event>
+
+    <!-- <event name="sales_order_place_after">
+        <observer name="verified_purchases_update_verification"
+            instance="Line\VerifiedPurchase\Observer\UpdateVerificationAfterOrderPlace" />
+    </event> -->
+    <!--
+        sales_order_payment_place_end
+        sales_order_process_relation
+    -->
+    <!-- <event name="sales_order_place_after">
+        <observer name="verified_purchases_update_verification"
+            instance="Line\VerifiedPurchase\Observer\UpdateVerificationAfterOrderPlace" />
+    </event> -->
+    <event name="checkout_submit_all_after">
+        <observer name="verified_purchases_update_verification"
+            instance="Line\VerifiedPurchase\Observer\UpdateVerificationAfterOrderPlace" />
+    </event>
+</config>

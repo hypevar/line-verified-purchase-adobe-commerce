@@ -1,0 +1,36 @@
+{
+    "verified_purchase_customer_order": {
+        "column": {
+            "entity_id": true,
+            "order_id": true,
+            "increment_id": true,
+            "is_completed": true,
+            "is_failed": true,
+            "failures_num": true,
+            "customer_id": true,
+            "buyer_email": true,
+            "masked_credit_card": true,
+            "status": true,
+            "customer_identifier": true,
+            "verification_mode": true,
+            "time_amount": true,
+            "time_unit": true,
+            "verified_purchase_id": true,
+            "verification_channel": true,
+            "transaction_identifier": true,
+            "buyer_identifier": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "VERIFIED_PURCHASE_CUSTOMER_ORDER_ORDER_ID": true,
+            "VERIFIED_PURCHASE_CUSTOMER_ORDER_CUSTOMER_ID": true,
+            "VERIFIED_PURCHASE_CUSTOMER_ORDER_BUYER_EMAIL_MASKED_CREDIT_CARD": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "VERIFIED_PURCHASE_CUSTOMER_ORDER_ORDER_ID_SALES_ORDER_ENTITY_ID": true,
+            "VERIFIED_PURCHASE_CSTR_ORDER_CSTR_ID_CSTR_ENTT_ENTT_ID": true
+        }
+    }
+}

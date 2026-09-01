@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+
+    <system>
+        <section id="payment" type="text" sortOrder="410" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="verified_purchase" translate="label" type="text" sortOrder="100"
+                showInDefault="1" showInWebsite="1" showInStore="1">
+                <attribute type="displayIn">other_payment_methods</attribute>
+                <label>Verified Purchase (by Line)</label>
+                <field id="active" translate="label" type="select" sortOrder="1"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Status</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                </field>
+
+                <field id="module_mode" translate="label" type="select" sortOrder="20"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Mode</label>
+                    <source_model>Line\VerifiedPurchase\Model\Config\Source\Modes</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
+
+                <field id="sandbox_api_key" translate="label" type="obscure" sortOrder="22"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Sandbox Api Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                        <field id="*/*/module_mode">sandbox</field>
+                    </depends>
+                </field>
+                <field id="sandbox_url" translate="label" type="text" sortOrder="23"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Sandbox URL</label>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                        <field id="*/*/module_mode">sandbox</field>
+                    </depends>
+                </field>
+
+                <field id="production_api_key" translate="label" type="obscure" sortOrder="22"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Production Api Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                        <field id="*/*/module_mode">production</field>
+                    </depends>
+                </field>
+                <field id="production_url" translate="label" type="text" sortOrder="23"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Production URL</label>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                        <field id="*/*/module_mode">production</field>
+                    </depends>
+                </field>
+
+                <field id="verification_mode" translate="label" type="select" sortOrder="30"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Verification Mode</label>
+                    <source_model>Line\VerifiedPurchase\Model\Config\Source\VerificationModes</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
+
+                <field id="credit_card_summary_description" translate="label comment" type="text" sortOrder="40"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Credit Card Summary Description</label>
+                    <validate>required-entry validate-length minimum-length-1 maximum-length-18</validate>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                    <comment>Text that will appear on the cardholder's account summary (if immediate is enabled) when generating the consumption with the amount to be validated</comment>
+                </field>
+
+                <field id="time_unit" translate="label value" type="select" sortOrder="50"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Time Unit</label>
+                    <source_model>Line\VerifiedPurchase\Model\Config\Source\TimeUnit</source_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                    <comment>Indicates time unit to represent code or amount expiration used for the verification process</comment>
+                </field>
+
+                <field id="time_amount" translate="label value" type="text" sortOrder="60"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Time Amount</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                    <comment>Indicates the time amount available to verify the Order, expressed using the unit configured in the Time Unit field</comment>
+                </field>
+
+                <field id="max_tries" translate="label value" type="text" sortOrder="60"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Max Tries</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                    <comment>La cantidad máxima de intentos que puede realizar el comprador para validar el código.</comment>
+                </field>
+
+                <field id="order_status_pending" translate="label value" type="select" sortOrder="60"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Order Status Process Start</label>
+                    <validate>required-entry</validate>
+                    <source_model>Line\VerifiedPurchase\Model\Config\Source\Order\Status\Pending</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                    <comment>Status to set the Order when a Verification Process is created and pending</comment>
+                </field>
+
+                <field id="order_status_failed" translate="label value" type="select" sortOrder="60"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Order Status Process Failed</label>
+                    <validate>required-entry</validate>
+                    <source_model>Line\VerifiedPurchase\Model\Config\Source\Order\Status\Failed</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                    <comment>Status to set the Order when a Verification Process failed (due to max tries or expiration)</comment>
+                </field>
+
+                <field id="order_status_complete" translate="label value" type="select" sortOrder="60"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Order Status Process Complete</label>
+                    <validate>required-entry</validate>
+                    <source_model>Line\VerifiedPurchase\Model\Config\Source\Order\Status\Complete</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                    <comment>Status to set the Order when a Verification Process is completed</comment>
+                </field>
+
+                <field id="email_sender_identity" translate="label value" type="select" sortOrder="60"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Email Sender</label>
+                    <validate>required-entry</validate>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                    <comment>Identity to be used for all email notifications</comment>
+                </field>
+
+                <field id="api_version" translate="label" type="select" sortOrder="70"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Api Version</label>
+                    <source_model>Line\VerifiedPurchase\Model\Config\Source\ApiVersion</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                </field>
+
+                <field id="debug_enabled" translate="label" type="select" sortOrder="100"
+                    showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Developer Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
+                    <comment>When enabled, a custom log will be created with relevant information for debugging. Please check: /var/log/line-verified-purchase.log</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

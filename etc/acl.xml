@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::marketing">
+                    <resource id="Line_VerifiedPurchase::marketing_email"
+                        title="Verified Purchase (by Line)"
+                        translate="title"
+                        sortOrder="30">
+
+                        <resource id="Line_VerifiedPurchase::template_configuration"
+                            title="Template Configuration"
+                            translate="title"
+                            sortOrder="10" />
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

@@ -1,0 +1,31 @@
+{
+    "name": "line/module-verified-purchase",
+    "description": "Line Verified Purchase service implementation, for Adobe Commerce and Magento Open Source",
+    "type": "magento2-module",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "authors": [
+        {
+            "name": "Line DEV Team",
+            "email": "info@line.net.ar"
+        }
+    ],
+    "minimum-stability": "stable",
+    "version": "0.5.0",
+    "require": {
+        "line/module-payment": "^0.5",
+        "magento/module-customer": "103.0.*",
+        "magento/module-sales": "103.0.*",
+        "php": "~8.1.0|~8.2.0|~8.3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Line\\VerifiedPurchase\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}

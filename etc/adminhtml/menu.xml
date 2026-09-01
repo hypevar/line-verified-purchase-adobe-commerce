@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Line_VerifiedPurchase::marketing_email"
+            title="Verified Purchase (by Line)"
+            translate="title"
+            module="Line_VerifiedPurchase"
+            parent="Magento_Backend::marketing"
+            sortOrder="30"
+            resource="Line_VerifiedPurchase::marketing_email"/>
+
+        <add id="Line_VerifiedPurchase::template_configuration"
+            title="Email Templates"
+            translate="title"
+            sortOrder="10"
+            module="Line_VerifiedPurchase"
+            parent="Line_VerifiedPurchase::marketing_email"
+            action="verified_purchase/template_configuration/"
+            dependsOnModule="Line_VerifiedPurchase"
+            resource="Line_VerifiedPurchase::template_configuration" />
+    </menu>
+</config>

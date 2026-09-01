@@ -1,0 +1,44 @@
+<?php
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+
+//@TODO: this may be replaced by a plugin class and pushed into the Customer message stack
+
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var Line\VerifiedPurchase\Block\Sales\Order\Notification $block */
+$url = $block->getNotificationUrl();
+/** @var Line\VerifiedPurchase\Api\Data\VerifyPurchaseInterface $verification */
+$verification = $block->getVerification();
+?>
+<?php if ($verification->getIsCompleted()): ?>
+    <div class="message success">
+        <span><?= $escaper->escapeHtml(__(
+            'Your identity has been successfully verified by <strong>Line Verified Purchase</strong>' .
+                ' - <a href="%1" target="_blank">Learn more...</a>',
+            'https://line.net.ar'
+        ), ['a', 'strong']); ?></span>
+    </div>
+<?php elseif ($verification->getIsPending()): ?>
+    <div class="message warning">
+        <span><?= $escaper->escapeHtml(__(
+            '<strong>Verified Purchase:</strong> You have a pending identity authentication process' .
+                ' - <a href="%1">please finish the process</a>',
+            $escaper->escapeHtml($url)
+        ), ['a', 'strong']); ?></span>
+    </div>
+<?php elseif ($verification->getIsFailed()): ?>
+    <?php if ($verification->getStatus() === 'ERROR'): ?>
+        <div class="message error">
+            <span><?= $escaper->escapeHtml(__(
+                'Verified Purchase Service returned error while creating the authentication'
+            )); ?></span>
+        </div>
+    <?php else: ?>
+        <div class="message error">
+            <span><?= $escaper->escapeHtml(__(
+                'Verified Purchase failed, please contact support for further assistance'
+            )); ?></span>
+        </div>
+    <?php endif ?>
+<?php endif; ?>

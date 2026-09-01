@@ -1,0 +1,134 @@
+<!--
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+-->
+<!--@subject {{trans "%store_name: Proceso de verificacion de pago pendiente" store_name=$store.frontend_name}} @-->
+<!--@vars {
+"var this.getUrl($store,'customer/account/',[_nosid:1])":"Customer Account URL",
+"var order_data.customer_name":"Customer Name",
+"var order.increment_id":"Order Id",
+"var order":"Order",
+"var payment_html|raw":"Payment Details",
+"var store.frontend_name":"Store Frontend Name",
+"var store_email|raw":"Store Email",
+"var store_phone":"Store Phone",
+"var verification.verification_purchase_id": "Verfication Process ID",
+"var verification.verification_mode": "Verfication Mode",
+"var this.getUrl($store,'verified_purchase/verification/form/',[id:$verification.customer_identifier])":"Verification Link",
+"var $verification.time_amount":"Verification Time Amount",
+"var $verification.time_unit":"Verification Time Unit"
+} @-->
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <table style="width:100%">
+                <tr>
+                    <td align="right">
+                        <p>{{trans "Orden de Compra: #%increment_id" increment_id=$order.increment_id}}</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h2>
+                Hola {{trans "%name" name=$order_data.customer_name}}! <br>
+                Necesitamos verificar tu tarjeta de crédito/débito.
+            </h2>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><strong>Queremos informarte que hemos recibido tu pedido con éxito!</strong></p>
+            <p>Sin embargo, para garantizar la seguridad de la transacción y
+                confirmar la titularidad de la tarjeta de crédito/débito utilizada,
+                requerimos una breve verificación.</p>
+            <p>Para completar la verificación, por favor sigue las siguientes instrucciones en nuestra web:</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table class="button" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>
+                        <table class="inner-wrapper" border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                                <td align="center">
+                                    <a href="{{var this.getUrl($store,'verified_purchase/verification/form/',[id:$verification.customer_identifier])}}"
+                                        target="_blank">Verificar Ahora</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" style="font-size: 90%">
+            <p>O ingresa al siguiente link:<br>
+            <a href="{{var this.getUrl($store,'verified_purchase/verification/form/',[id:$verification.customer_identifier])}}"
+                target="_blank">{{var this.getUrl($store,'verified_purchase/verification/form/',[id:$verification.customer_identifier])}}</a>
+            </p>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td class="method-info">
+            <h3>{{trans "Metodo de Pago"}}</h3>
+            {{var payment_html|raw}}
+        </td>
+    </tr>
+    <tr>
+        <td style="color: red;">
+            <p>
+                IMPORTANTE: Tienes {{var $verification.time_amount}} {{var $verification.time_unit}} para
+                ingresar el código y confirmar que eres el dueño de la tarjeta de crédito/débito.
+                De lo contrario tu compra será devuelta.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Recuerda que este paso es esencial para proteger tu compra y evitar cualquier uso
+                no autorizado de tu tarjeta de crédito/débito. Agradecemos tu cooperación y comprensión en este asunto.</p>
+            <p>Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en ponerte en
+                contacto con nuestro equipo de soporte al cliente {{trans '<a href="mailto:%store_email">%store_email</a>' store_email=$store_email |raw}}
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr class="email-information">
+        <td>
+            <table>
+                <tr>
+                    <td>
+                        <p>
+                            <strong>¿Qué es Line "Compras Verificadas"?</strong><br>
+                            Es una solución de prevención de fraude que garantiza que el titular de la tarjeta de
+                            crédito/debito a participar de la transacción, para saber mas ingresá en
+                            <a href="https://line.net.ar/" target="_blank">https://line.net.ar/</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>¿Cómo Funciona?</strong>
+                        <p>Cuando realizas una compra que necesita verificación, te enviaremos un código de 6 dígitos
+                            que vas a ver reflejado en la descripción del consumo en tu homebanking o app de tu banco, este
+                            código puede tardar hasta 72 horas en aparecer en la descripcion de tu consumo, segui las
+                            instrucciones que te enviamos por mail para verificar tu compra.
+                            Este paso es esencial para proteger tu compra y evitar cualquier uso
+                            no autorizado de tu tarjeta de crédito/débito.</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{{template config_path="design/email/footer_template"}}

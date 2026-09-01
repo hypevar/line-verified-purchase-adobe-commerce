@@ -1,0 +1,171 @@
+<?php
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+
+/**
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Line\VerifiedPurchase\Block\Adminhtml\Template\Configuration $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<?php if (!$block->getEditMode()): ?>
+    <form action="<?= $escaper->escapeUrl($block->getActionUrl()) ?>" method="post" id="template_configuration_form">
+        <?= $block->getBlockHtml('formkey') ?>
+        <fieldset class="admin__fieldset form-inline">
+            <legend class="admin__legend">
+                <span><?= $escaper->escapeHtml(__('Email Template Configuration')) ?></span>
+            </legend>
+            <br />
+            <div class="admin__field required">
+                <label class="admin__field-label" for="template_pending">
+                    <span><?= $escaper->escapeHtml(__('Email Template Pending')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <select id="template_pending"
+                        name="templates[pending]"
+                        class="admin__control-select required-entry">
+                        <?php foreach ($block->getPendingTemplates() as $option): ?>
+                            <?php $selected = $block->getCurrentPendingTemplate() == $option['value']
+                                ? ' selected="selected"' : ''; ?>
+                            <option value="<?= $escaper->escapeHtmlAttr($option['value']) ?>"
+                                <?= /* @noEscape */ $selected; ?>>
+                                <?= $escaper->escapeHtml($option['label']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="admin__field required">
+                <label class="admin__field-label" for="template_completed">
+                    <span><?= $escaper->escapeHtml(__('Email Template Completed')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <select id="template_completed"
+                        name="templates[completed]"
+                        class="admin__control-select required-entry">
+                        <?php foreach ($block->getCompletedTemplates() as $option): ?>
+                            <option value="<?= $escaper->escapeHtmlAttr($option['value']) ?>"
+                                <?php $selected = $block->getCurrentCompletedTemplate() == $option['value']
+                                    ? ' selected="selected"' : ''; ?>
+                                <?= /* @noEscape */ $selected; ?>>
+                                <?= $escaper->escapeHtml($option['label']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="admin__field required">
+                <label class="admin__field-label" for="template_canceled">
+                    <span><?= $escaper->escapeHtml(__('Email Template Canceled')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <select id="template_canceled"
+                        name="templates[canceled]"
+                        class="admin__control-select required-entry">
+                        <?php foreach ($block->getCanceledTemplates() as $option): ?>
+                            <option value="<?= $escaper->escapeHtmlAttr($option['value']) ?>"
+                                <?php $selected = $block->getCurrentCanceledTemplate() == $option['value']
+                                    ? ' selected="selected"' : ''; ?>
+                                <?= /* @noEscape */ $selected; ?>>
+                                <?= $escaper->escapeHtml($option['label']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="admin__field required">
+                <span class="admin__field-label"></span>
+                <div class="admin__field-control">
+                    <?= /* @noEscape */ $block->getLoadButtonHtml() ?>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+<?php endif ?>
+
+<?php
+$scriptString = <<<script
+
+require([
+    "jquery",
+    "Magento_Ui/js/modal/alert",
+    'Magento_Ui/js/modal/confirm',
+    "mage/mage",
+    "prototype"
+], function(jQuery, alert, confirm){
+
+//<![CDATA[
+    jQuery('#template_configuration_form').mage('form').mage('validation');
+
+    templateControl = {
+        events: {
+            'click [data-role=save-configuration]' : 'save',
+        },
+
+        init: function () {
+            if ($('convert_button_back')) {
+                $('convert_button_back').hide();
+            }
+
+            this.bindEvents();
+        },
+
+        bindEvents: function(){
+            var events = this.events,
+                eventName,
+                selector,
+                callback,
+                key;
+
+            for( key in events ){
+                callback    = this[events[key]];
+                key         = key.split(' ');
+
+                eventName   = key[0];
+                selector    = key.slice(1).join(' ');
+
+                jQuery(selector).on(eventName, jQuery.proxy(callback, this) );
+            }
+        },
+
+        save: function() {
+            // Temporary solution will be replaced after refactoring of email templates functionality
+            jQuery('#email_template_edit_form').triggerHandler('save');
+            return false;
+        },
+
+        renderPaths: function(paths, fieldId) {
+            var field = $(fieldId);
+            if (field) {
+                field.down('div').down('div')
+                .update(this.parsePath(paths, '<span class="path-delimiter">&nbsp;-&gt;&nbsp;</span>', '<br />'));
+            }
+        },
+
+        parsePath: function (value, pathDelimiter, lineDelimiter) {
+            if (Object.isArray(value)) {
+                var result = [];
+                for (var i = 0, len = value.length; i < len; i++) {
+                    result.push(this.parsePath(value[i], pathDelimiter, pathDelimiter));
+                }
+                return result.join(lineDelimiter);
+            }
+
+            if(!Object.isString(value) && value.title) {
+                value = (value.url ? '<a href="' + value.url + '">' + value.title + '</a>' : value.title) +
+                 (value.scope ? '&nbsp;&nbsp;<span class="path-scope-label">(' + value.scope + ')</span>' : '');
+            }
+
+            return value;
+        }
+    };
+
+    // templateControl.init();
+//]]>
+
+});
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>

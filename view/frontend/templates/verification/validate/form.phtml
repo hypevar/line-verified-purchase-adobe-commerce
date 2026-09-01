@@ -1,0 +1,88 @@
+<?php
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+
+/** @var \Line\VerifiedPurchase\Block\Verification\Form $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+<?php if ($block->getIsCompleted() || $block->getIsFailed()): ?>
+    <div>
+        <div>
+            <h2><?= $escaper->escapeHtml(__('Verification Process')); ?></h2>
+        </div>
+        <div>
+            <p><?= $escaper->escapeHtml(__(
+                'Either verification does not exists, its completed or unavailable'
+            )); ?></p>
+            <p><?= $escaper->escapeHtml(__('If you have any questions or need technical assistance, '
+                . 'please reach out to support')); ?>
+            </p>
+        </div>
+    </div>
+<?php else: ?>
+    <form class="form form-edit-account"
+        action="<?= $escaper->escapeUrl($block->getPostAction()) ?>"
+        method="post" id="authentication-process-form"
+        enctype="multipart/form-data"
+        data-hasrequired="<?= $escaper->escapeHtmlAttr(__('* Required Fields')) ?>"
+        autocomplete="off"
+        data-mage-init='{"validation":{}}'>
+        <fieldset class="fieldset">
+            <legend class=" legend">
+                <span><?= $escaper->escapeHtml(__('Order Information')) ?></span>
+            </legend><br>
+            <div class="field">
+                <label class="label">
+                    <span><?= $escaper->escapeHtml(__('Order Number')) ?></span>
+                </label>
+                <div class="control">
+                    #<?= $escaper->escapeHtml($block->getOrderId()); ?></span>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="fieldset info">
+            <?= $block->getBlockHtml('formkey') ?>
+            <legend class="legend">
+                <span><?= $escaper->escapeHtml(__('Validation Process')) ?></span>
+            </legend><br>
+
+            <div class="field validation-code required">
+                <label class="label" for="validation-code">
+                    <span><?= $escaper->escapeHtml(__('Code')) ?></span>
+                </label>
+                <div class="control">
+                    <input name="code" value="" autocomplete="off"
+                        id="code"
+                        type="text"
+                        class="input-text"
+                        title="<?= $escaper->escapeHtmlAttr(__('Code')) ?>"
+                        data-mage-init='{"mage/trim-input":{}}'
+                        data-validate="{required:true}" />
+                </div>
+            </div>
+
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit" class="action login primary" name="send" id="send2">
+                        <span><?= $escaper->escapeHtml(__('Validate')) ?></span>
+                    </button>
+                </div>
+            </div>
+
+            <?= $block->getChildHtml('fieldset_info_additional') ?>
+        </fieldset>
+
+        <?php // phpcs:ignore Magento2.Legacy.PhtmlTemplate ?>
+        <script type="text/x-magento-init">
+            {
+            "*": {
+                "Magento_Customer/js/block-submit-on-send": {
+                    "formId": "authorization-process-form"
+                }
+            }
+        }
+        </script>
+    </form>
+<?php endif; ?>

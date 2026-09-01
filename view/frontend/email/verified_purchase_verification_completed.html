@@ -1,0 +1,91 @@
+<!--
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+-->
+<!--@subject {{trans "%store_name: Has verificado tu operación correctamente" store_name=$store.frontend_name}} @-->
+<!--@vars {
+"var this.getUrl($store,'customer/account/',[_nosid:1])":"Customer Account URL",
+"var order_data.customer_name":"Customer Name",
+"var order.increment_id|raw":"Order Id",
+"var order":"Order",
+"var payment_html|raw":"Payment Details",
+"var store.frontend_name":"Store Frontend Name",
+"var store_email":"Store Email",
+"var store_phone":"Store Phone"
+} @-->
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <table style="width:100%">
+                <tr>
+                    <td align="right">
+                        <p>{{trans "Orden de Compra: #%increment_id" increment_id=$order.increment_id|raw}}</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr class="hero">
+        <td align="center" style="color: green; font-size: 3.5rem;">
+            <h2>Compra verificada!</h2>
+        </td>
+    </tr>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "%name," name=$order_data.customer_name}}</p>
+            <p>
+                {{trans
+                "Tu compra ha sido verificada correctamente #%increment_id."
+
+                increment_id=$order.increment_id
+                |raw}}
+            </p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+            <h3>Resumen de compra</h3>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td class="method-info">
+            <h3>{{trans "Payment Method"}}</h3>
+            {{var payment_html|raw}}
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr class="email-information">
+        <td>
+            <table>
+                <tr>
+                    <td>
+                        <p>
+                            <strong>¿Qué es Line "Compras Verificadas"?</strong><br>
+                            Es una solución de prevención de fraude que garantiza que el titular de la tarjeta de
+                            crédito/debito a participar de la transacción, para saber mas ingresá en
+                            <a href="https://line.net.ar/" target="_blank">https://line.net.ar/</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>¿Cómo Funciona?</strong>
+                        <p>Cuando realizas una compra que necesita verificación, te enviaremos un código de 6 dígitos
+                            que vas a ver reflejado en la descripción del consumo en tu homebanking o app de tu banco, este
+                            código puede tardar hasta 72 horas en aparecer en la descripcion de tu consumo, segui las
+                            instrucciones que te enviamos por mail para verificar tu compra.
+                            Este paso es esencial para proteger tu compra y evitar cualquier uso
+                            no autorizado de tu tarjeta de crédito/débito.</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

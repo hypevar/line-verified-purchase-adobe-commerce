@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="verified_purchase_verification"/>
+
+    <body>
+        <referenceContainer name="content">
+            <block class="Line\VerifiedPurchase\Block\Verification\Form" as="verification_form"
+                name="sales.order.info"
+                after="verified.purchase.verification.form"
+                cacheable="false">
+
+                <container name="verified.purchase.verification.process.form.info.blocks"
+                    as="fieldset_info_additional">
+
+                    <block class="Magento\Framework\View\Element\Template"
+                        name="verified.purchase.verification.form.information"
+                        as="verified_purchase_verification_notification"
+                        template="Line_VerifiedPurchase::verification/validate/information.phtml" />
+                </container>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

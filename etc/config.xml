@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+
+    <default>
+        <payment>
+            <verified_purchase>
+                <active>0</active>
+
+                <module_mode>sandbox</module_mode>
+                <sandbox_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <production_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <sandbox_url>https://ccs.4fsoluciones.com.ar/linerestapitest/api</sandbox_url>
+                <production_url>https://ccs.4fsoluciones.com.ar/linerestapi/api</production_url>
+
+                <verification_mode>INMEDIATO</verification_mode>
+                <time_unit>HORA</time_unit>
+                <time_amount>1</time_amount>
+                <credit_card_summary_description>Line Verification Amount</credit_card_summary_description>
+                <max_tries>3</max_tries>
+
+                <order_status_pending>processing</order_status_pending>
+                <order_status_complete>new_payment_approved</order_status_complete>
+                <order_status_failed>fraud</order_status_failed>
+
+                <email_sender_identity>support</email_sender_identity>
+                <email_template_pending>payment_verified_purchase_email_template_pending</email_template_pending>
+                <email_template_completed>payment_verified_purchase_email_template_completed</email_template_completed>
+                <email_template_canceled>payment_verified_purchase_email_template_canceled</email_template_canceled>
+
+                <api_version>v2</api_version>
+                <debug_enabled>0</debug_enabled>
+            </verified_purchase>
+        </payment>
+    </default>
+</config>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+
+    <!-- Customer: verification process pending -->
+    <template id="payment_verified_purchase_email_template_pending"
+        module="Line_VerifiedPurchase"
+        area="frontend"
+        type="html"
+        label="Line Verified Purchase Notification Pending"
+        file="verified_purchase_verification_pending.html" />
+
+    <!-- Customer: verification process is complete -->
+    <template id="payment_verified_purchase_email_template_completed"
+        module="Line_VerifiedPurchase"
+        area="frontend"
+        type="html"
+        label="Line Verified Purchase Notification Completed"
+        file="verified_purchase_verification_completed.html" />
+
+    <!-- Customer: verification process is canceled -->
+    <template id="payment_verified_purchase_email_template_canceled"
+        module="Line_VerifiedPurchase"
+        area="frontend"
+        type="html"
+        label="Line Verified Purchase Notification Canceled"
+        file="verified_purchase_verification_canceled.html" />
+</config>

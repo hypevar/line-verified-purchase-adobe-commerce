@@ -1,0 +1,40 @@
+<?php
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+
+/** @var \Line\VerifiedPurchase\Block\Verification\Result $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+/** @var Line\VerifiedPurchase\Api\Data\VerifyPurchaseInterface $verification */
+$verification = $block->getVerification();
+?>
+<?php if ($verification->getIsCompleted()): ?>
+    <div>
+        <h3><?= $escaper->escapeHtml(__('Congratulations!')); ?></h3>
+        <p><?= $escaper->escapeHtml(__('You have completed the authorization process correctly')); ?></p>
+        <p><?= $escaper->escapeHtml(__('Order Number %1', $verification->getIncrementId())); ?></p>
+    </div>
+<?php elseif ($verification->getIsFailed()): ?>
+    <div>
+        <h3><?= $escaper->escapeHtml(__('Verification Process Failed')); ?></h3>
+        <p><?= $escaper->escapeHtml(__('You have reached the maximum amount of tries')); ?></p>
+        <p>
+            <a href="<?= $escaper->escapeUrl($block->getBackUrl()) ?>">
+                <?= $escaper->escapeHtml(__('Go back to the validation form and try again...')); ?>
+            </a>
+        </p>
+    </div>
+<?php else: ?>
+    <div>
+        <h3><?= $escaper->escapeHtml(__('Verification Process Incomplete')); ?></h3>
+        <p><?= $escaper->escapeHtml(__(
+            'If you have any questions or need technical assistance, please reach out to support'
+        )); ?></p>
+        <p>
+            <a href="<?= $escaper->escapeUrl($block->getBackUrl()) ?>">
+                <?= $escaper->escapeHtml(__('Go back to the validation form and try again...')); ?>
+            </a>
+        </p>
+    </div>
+<?php endif; ?>

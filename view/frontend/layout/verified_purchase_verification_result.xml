@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2024 Line. All rights reserved.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="verified_purchase_verification"/>
+
+    <body>
+        <referenceContainer name="content">
+            <block class="Line\VerifiedPurchase\Block\Verification\Result"
+                as="verified_purchase_verification_result"
+                name="verified.purchase.verification.result"
+                cacheable="false">
+            </block>
+        </referenceContainer>
+    </body>
+</page>
