@@ -40,6 +40,39 @@ configuración SSL propia.
 
 La dependencia es unidireccional: `Line_Payment` no referencia a `Line_VerifiedPurchase`.
 
+## Instalación
+Antes de instalarlo hay que declarar los repositorios VCS en el `composer.json` raíz del proyecto Magento:
+
+```json
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/hypevar/line-adobe-commerce.git"
+    },
+    {
+        "type": "vcs",
+        "url": "https://github.com/hypevar/line-verified-purchase-adobe-commerce.git"
+    }
+]
+```
+
+Equivalente por CLI, si se prefiere no editar el archivo a mano:
+
+```bash
+composer config repositories.line-payment vcs https://github.com/hypevar/line-adobe-commerce.git
+composer config repositories.line-verified-purchase vcs https://github.com/hypevar/line-verified-purchase-adobe-commerce.git
+```
+
+Con los repositorios declarados alcanza con pedir este módulo: Composer resuelve
+`line/module-payment` por la dependencia declarada.
+
+```bash
+composer require line/module-verified-purchase:^1.0
+bin/magento setup:upgrade
+bin/magento setup:di:compile
+bin/magento cache:flush
+```
+
 ## Configuración
 
 Sección de admin: `Stores > Configuration > Sales > Payment Methods > Verified Purchase (by Line)`
@@ -91,9 +124,3 @@ Sección de admin: `Stores > Configuration > Sales > Payment Methods > Verified 
     - make restorable a few configuration options
 
 * 0.3.1: Order Pending Status now updated to allow selections from PROCESSING states
-
-
-## Update through composer
-```
-composer require line/module-payment line/module-verified-purchase
-```
