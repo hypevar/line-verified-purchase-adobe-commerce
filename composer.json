@@ -13,7 +13,6 @@
         }
     ],
     "minimum-stability": "stable",
-    "version": "0.5.0",
     "require": {
         "line/module-payment": "^1.0",
         "magento/module-customer": "103.0.*",
